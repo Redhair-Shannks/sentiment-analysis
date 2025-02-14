@@ -1,7 +1,7 @@
 "use client";
 
 import { ClerkProvider, SignedIn, SignedOut, SignIn, UserButton } from "@clerk/nextjs";
-import { GeistMono, GeistSans } from "next/font/google";
+import { Geist_Mono as GeistMono, Geist as GeistSans } from "next/font/google";
 
 const geistSans = GeistSans({ subsets: ["latin"], variable: "--font-geist-sans" });
 const geistMono = GeistMono({ subsets: ["latin"], variable: "--font-geist-mono" });

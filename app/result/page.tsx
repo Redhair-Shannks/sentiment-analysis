@@ -57,7 +57,7 @@ const ResultComponent = () => {
     <div className="p-4 space-y-6 text-black">
       {/* Sentiment Analysis Pie Chart */}
       <Card>
-        <CardContent className="p-4">
+        <CardContent>
           <h2 className="text-xl font-semibold mb-4">Sentiment Distribution</h2>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
@@ -74,7 +74,7 @@ const ResultComponent = () => {
 
       {/* Top Liked Comments Table */}
       <Card>
-        <CardContent className="p-4">
+        <CardContent>
           <h2 className="text-xl font-semibold mb-4">Top 5 Liked Comments</h2>
           <Table>
             <TableHeader>
@@ -99,7 +99,7 @@ const ResultComponent = () => {
 
       {/* Top Replied Comments Table */}
       <Card>
-        <CardContent className="p-4">
+        <CardContent>
           <h2 className="text-xl font-semibold mb-4">Top 5 Replied Comments</h2>
           <Table>
             <TableHeader>
@@ -124,7 +124,7 @@ const ResultComponent = () => {
 
       {/* Top Emojis Table */}
       <Card>
-        <CardContent className="p-4">
+        <CardContent>
           <h2 className="text-xl font-semibold mb-4">Top 5 Emojis</h2>
           <Table>
             <TableHeader>
