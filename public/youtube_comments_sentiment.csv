@@ -1,24 +1,75 @@
 Comment,Sentiment,Votes,Hearted,Replies,Date/Time
-3:28 ☠️👿🔥👑,Neutral,0,False,0,3 hours ago
-2:01 benstokes 😂❤,Positive,1,False,0,3 hours ago (edited)
-King 👑❤,Positive,2,False,0,3 days ago
-South africa won the t20 series 2-0 and then won odi 3-2 and then won test series 3-0 in 4 test matches. 2015 year virat kohli captain in test matches and india went from 7th in test cricket to 1st. Ravi shastri became coach after kumble. Chennai hosted 4th odi as well.,Neutral,5,False,0,3 days ago
-4th odi 2015 kohli century and then gives biceps pose and then abd scores century but bhuvaneshwar gets abd out.,Neutral,1,False,0,3 days ago
-now is bro nowhere like this agressive sad life,Negative,5,False,0,4 days ago
-Virat Kohli aggression and attitude at that time was just outstanding...He hated getting out....Miss that kohli for life...😢,Negative,33,False,0,5 days ago
-🔥🔥 when Virat used to dominate aganist spinners,Neutral,3,False,0,6 days ago
-Assalamualaikum I invite everyone to listen holy Quran & Islamic speech from the India🇮🇳❤😊😅😮😅😅😊,Positive,5,False,0,6 days ago
-Kohli Raina partnership always underrated ❤,Positive,7,False,0,7 days ago
-100 with 6 wow lockdown kids kaha gye,Neutral,18,False,0,7 days ago
-Please Frend Upload Rohit Sharma 104 vs Sri Lanka,Neutral,8,False,0,9 days ago
-Please Bro Upload Rohit Sharma 91 vs Pakistan Champion Trophy 2017,Neutral,3,False,0,9 days ago
-Please Bro Upload Rohit Sharma 123 vs Bangladesh Champion Trophy 2017,Neutral,1,False,0,9 days ago
-Won the T20 by 3-0 not 2-0,Neutral,1,False,1,2 days ago
- @SWAGATA-f6e one game was abandoned due to rain in Dharamshala I guess,Negative,0,False,1,1 day ago
-Ab and virat era,Neutral,0,False,1,4 days ago
-The aggression we lost after his downfall,Negative,0,False,1,2 days ago
-Where?,Neutral,0,False,1,6 days ago
-Delete  ☪️️ancer,Neutral,0,False,1,5 days ago
-Where? I will stay away from that place because don't want to explode.,Negative,0,False,1,1 day ago
-​ @sodabutnofizz1294 😭🤣,Neutral,1,False,1,3 hours ago
-Fact is that he is the only player who completed century by hitting six in test odi t20i IPL,Positive,2,False,1,3 hours ago
+can you please make video on how to integrate clerk using express in backend and nextjs as only frontend,Neutral,0,False,0,1 month ago
+"@clerkdev I can't find information anywhere that tells me how to change light and dark mode for the clerk cards in my app. I can set the baseTheme in my ClerkProvider, but what if I want that theme to change if my user toggles light/dark modes? I've looked through the docs and had a peak at the package itself but I don't see a clear way to modify SignIn, SignUp, and the popup I get from UserButton so that I can use the current theme in styling the component, or telling it to use a given theme from @clerk/themes. Thoughts?",Neutral,0,False,0,1 month ago
+"We want to remove the ""Secured by Clerk"" on both the <SignUp /> and <SignIn /> components. Is there any way to do so? 
+
+If there is no way, that may be a deal breaker.",Neutral,0,False,0,1 month ago
+"Is there any way to fully customize the account portal? I need it in Spanish, and I already tried using localizations, but I also want more control over the placeholders. Despite having the localization set to 'esES,' they remain in English.",Neutral,0,False,0,2 months ago
+Please do video on Remix + clerk,Neutral,0,False,0,2 months ago
+"Hey, clerk elements are great! The only thing I cannot find in the documentation is the ""forceRedirectUrl"" using OAuth, similar when we use <SignInButton forceRedirectUrl={process.env.CLERK_SIGN_IN_FORCE_REDIRECT_URL} />
+Would be great if someone can link how to do that.",Positive,0,False,0,2 months ago
+"ailed to compile
+
+./node_modules/@clerk/clerk-react/node_modules/@clerk/shared/dist/react/index.mjs
+Attempted import error: 'SWRConfig' is not exported from 'swr' (imported as 'SWRConfig'). i am getting this error plz help me",Negative,0,False,0,2 months ago
+OKO,Neutral,0,False,0,3 months ago
+how will the redirection url will work now,Neutral,0,False,0,3 months ago
+"How can we make a payment registration form? 
+For users to sign in to our app, they need to first pay a subscription. Can it work with Stripe, for example?",Neutral,6,False,0,4 months ago
+Website not working,Negative,0,False,0,4 months ago
+does it not redirect after signin . is there anyone face same issue?,Neutral,1,False,0,5 months ago
+Kindly do clerk auth tutorial with prisma and mongodb plz,Neutral,1,False,0,5 months ago
+can you do a tutorial on role base authentication,Neutral,1,False,0,5 months ago
+After signing in by clicking signInButton and login but still sees the sign in button it doesn't go even after signing,Negative,0,False,0,5 months ago
+"cant modify the width and hieght of clerk components , f**ks up the entire page layout , in mobile view , I want it to be of a certain size",Negative,0,False,0,5 months ago
+@ragavanr4472 could you please explain,Neutral,0,False,0,5 months ago
+"It doesn't workin, it's Re-direct but shows,This Page isn't working contact the site owner.Give  a suggestion",Negative,3,False,0,6 months ago
+"I think there's misalignment in the docs using createRouteMatcher which uses signin and signup without a hyphen, should be sign-in and sign-up",Negative,0,False,0,6 months ago
+"please , my clerk does not work on my next app, what could the issue be",Negative,1,False,0,6 months ago
+"Never mind, I think I've figured it out. Not the prettiest but for demo purposes, it's fine. Here's what I found...
+
+'use client'
+
+import { ClerkLoading, UserButton } from '@clerk/nextjs'
+import { dark } from '@clerk/themes'
+import { LoaderCircle } from 'lucide-react'
+import { useTheme } from 'next-themes'
+import { Fragment } from 'react'
+
+const _UserButton = () => {
+  const { resolvedTheme } = useTheme()
+  return (
+    <Fragment>
+      <ClerkLoading>
+        <div className='flex items-center justify-center'>
+          <LoaderCircle className='animate-spin' />
+        </div>
+      </ClerkLoading>
+      <UserButton
+        appearance={{ baseTheme: resolvedTheme === 'dark' ? dark : undefined }}
+        afterSignOutUrl='/'
+      />
+    </Fragment>
+  )
+}
+
+export default _UserButton",Neutral,0,False,1,1 month ago
+The paid version removes branding IIRC,Neutral,0,False,1,2 weeks ago
+"Nevermind, found we can set that in the provider which is nice.
+<ClerkProvider publishableKey=""pk_test_c21p...."" signInForceRedirectUrl=""http://localhost:3000/dashboard"">",Positive,0,False,1,2 months ago
+"/node_modules/@clerk/clerk-react/node_modules/@clerk/shared/dist/react/index.mjs
+Attempted import error: 'SWRConfig' is not exported from 'swr' (imported as 'SWRConfig'). i am getting this error plz help me",Negative,0,False,1,2 months ago
+exactly bro,Neutral,0,False,1,5 months ago
+you still need help?,Neutral,0,False,1,3 weeks ago
+"Yes, coming up 😀",Positive,1,False,1,5 months ago
+yes i have same problem,Negative,0,False,1,5 months ago
+Sorry you're having trouble with your implementation. The page your application redirects to isn't a Clerk page.  Please elaborate a bit more on your problem and I'll be happy to help.,Negative,0,False,1,6 months ago
+"does it not redirect?
+it happened to me but i created a new matcher
+
+what does it do?",Neutral,0,False,1,6 months ago
+ @LibrocreatesL2  how did you do it please,Neutral,0,False,1,6 months ago
+" @paulsongerald7473  Sorry to hear you're having trouble with your implementation. Please can you elaborate on what you mean by ""does not work""?",Negative,1,False,1,6 months ago
+" @bookercodes  its not working on my project too , I follow the quick start instructions and when i npm run my project still not redirecting to signin",Negative,0,False,1,5 months ago
+ @joshbakit  Sorry to hear that mate. It's hard to help here on YouTube where we can't easily share code snippets or links. Can you please get in touch with the team with an email or through Discord? They're remarkably responsive.,Neutral,0,False,1,5 months ago
+ @bookercodes  hey i have faced same redirecting issue. i think its happen after new update,Neutral,0,False,1,5 months ago (edited)

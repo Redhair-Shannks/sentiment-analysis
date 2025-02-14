@@ -15,7 +15,6 @@ const geistMono = GeistMono({
   subsets: ["latin"],
 });
 
-
 export default function RootLayout({
   children,
 }: Readonly<{
