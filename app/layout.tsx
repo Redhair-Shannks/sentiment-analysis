@@ -1,19 +1,21 @@
 "use client";
-import { Geist_Mono as GeistMono, Geist as Geist } from "next/font/google";
+import { Geist_Mono as GeistMono, Geist as GeistSans } from "next/font/google";
+
 
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
 import { FlaskResponseProvider } from "./context/FlaskResponseContext";
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const geistSans = GeistSans({
   subsets: ["latin"],
+  variable: "--font-geist-sans",
 });
 
 const geistMono = GeistMono({
-  variable: "--font-geist-mono",
   subsets: ["latin"],
+  variable: "--font-geist-mono",
 });
+
 
 export default function RootLayout({
   children,
