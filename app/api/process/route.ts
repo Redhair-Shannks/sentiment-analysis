@@ -8,8 +8,8 @@ export async function POST(req: Request) {
     console.log("Processing YouTube Link:", link);
 
     // ✅ Get absolute paths of Python scripts
-    const mainPyPath = path.join(process.cwd(), "backend", "main.py");
-    const analysisPyPath = path.join(process.cwd(), "backend", "analysis.py");
+    const mainPyPath = "../../../backend.main.py"
+    const analysisPyPath = "../../../backend/analysis.py";
 
     // ✅ Run `main.py` with YouTube link
     await new Promise((resolve, reject) => {
