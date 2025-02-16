@@ -1,54 +1,24 @@
 Category,Type,Value,Frequency,Hearted
-Sentiment,Positive,Neutral,20,N/A
-Sentiment,Neutral,Negative,12,N/A
-Sentiment,Negative,Positive,3,N/A
-Top Liked Comment,Comment,"How can we make a payment registration form? 
-For users to sign in to our app, they need to first pay a subscription. Can it work with Stripe, for example?",6,0
-Top Liked Comment,Comment,"It doesn't workin, it's Re-direct but shows,This Page isn't working contact the site owner.Give  a suggestion",3,0
-Top Liked Comment,Comment,can you do a tutorial on role base authentication,1,0
-Top Liked Comment,Comment,Kindly do clerk auth tutorial with prisma and mongodb plz,1,0
-Top Liked Comment,Comment,does it not redirect after signin . is there anyone face same issue?,1,0
-Top Replied Comment,Comment, @bookercodes  hey i have faced same redirecting issue. i think its happen after new update,1,0
-Top Replied Comment,Comment,"Yes, coming up 😀",1,0
-Top Replied Comment,Comment,"Never mind, I think I've figured it out. Not the prettiest but for demo purposes, it's fine. Here's what I found...
-
-'use client'
-
-import { ClerkLoading, UserButton } from '@clerk/nextjs'
-import { dark } from '@clerk/themes'
-import { LoaderCircle } from 'lucide-react'
-import { useTheme } from 'next-themes'
-import { Fragment } from 'react'
-
-const _UserButton = () => {
-  const { resolvedTheme } = useTheme()
-  return (
-    <Fragment>
-      <ClerkLoading>
-        <div className='flex items-center justify-center'>
-          <LoaderCircle className='animate-spin' />
-        </div>
-      </ClerkLoading>
-      <UserButton
-        appearance={{ baseTheme: resolvedTheme === 'dark' ? dark : undefined }}
-        afterSignOutUrl='/'
-      />
-    </Fragment>
-  )
-}
-
-export default _UserButton",1,0
-Top Replied Comment,Comment,The paid version removes branding IIRC,1,0
-Top Replied Comment,Comment,"Nevermind, found we can set that in the provider which is nice.
-<ClerkProvider publishableKey=""pk_test_c21p...."" signInForceRedirectUrl=""http://localhost:3000/dashboard"">",1,0
-Word,Word,the,28,N/A
-Word,Word,i,25,N/A
-Word,Word,to,22,N/A
-Word,Word,clerk,18,N/A
-Word,Word,in,15,N/A
-Word,Word,it,15,N/A
-Word,Word,and,13,N/A
-Word,Word,a,13,N/A
-Word,Word,can,12,N/A
-Word,Word,you,10,N/A
-Emoji,Emoji,😀,1,N/A
+Sentiment,Positive,,45,N/A
+Sentiment,Neutral,,28,N/A
+Sentiment,Negative,,27,N/A
+Top Liked Comment,Comment,Comment 48,500,0
+Top Liked Comment,Comment,Comment 34,499,1
+Top Liked Comment,Comment,Comment 77,499,0
+Top Liked Comment,Comment,Comment 65,499,0
+Top Liked Comment,Comment,Comment 84,496,1
+Top Replied Comment,Comment,Comment 39,49,0
+Top Replied Comment,Comment,Comment 58,48,0
+Top Replied Comment,Comment,Comment 97,48,0
+Top Replied Comment,Comment,Comment 49,47,0
+Top Replied Comment,Comment,Comment 86,47,0
+Word,Word,comment,100,N/A
+Word,Word,1,1,N/A
+Word,Word,2,1,N/A
+Word,Word,3,1,N/A
+Word,Word,4,1,N/A
+Word,Word,5,1,N/A
+Word,Word,6,1,N/A
+Word,Word,7,1,N/A
+Word,Word,8,1,N/A
+Word,Word,9,1,N/A

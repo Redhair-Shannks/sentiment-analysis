@@ -83,7 +83,7 @@ output_data = {
              ["Word"] * len(top_words) + 
              ["Emoji"] * len(top_emojis),
     
-    "Value": list(sentiment_counts.keys()) +
+  "Value": [""] * 3 +  # ✅ Fix: Empty Value for Sentiment
               list(top_liked_comments["comment"]) +
               list(top_replied_comments["comment"]) +
               [word[0] for word in top_words] +
@@ -95,7 +95,7 @@ output_data = {
                   [word[1] for word in top_words] +
                   [emoji[1] for emoji in top_emojis],
     
-    "Hearted": ["N/A", "N/A", "N/A"] + 
+    "Hearted": ["N/A"] * len(sentiment_counts) +  # N/A for sentiment rows
                 list(top_liked_comments["hearted"]) +
                 list(top_replied_comments["hearted"]) +
                 ["N/A"] * (len(top_words) + len(top_emojis))
