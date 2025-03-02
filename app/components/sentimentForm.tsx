@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { Loader2 } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { HfInference } from "@huggingface/inference"
 import AnalysisLoader from "./AnalysisLoader"
 
 interface VideoDetails {
@@ -15,8 +14,6 @@ interface VideoDetails {
   subscribers: string
 }
 
-const client = new HfInference("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")
-
 const SentimentForm = () => {
   const [youtubeLink, setYoutubeLink] = useState("")
   const [loading, setLoading] = useState(false)
@@ -24,7 +21,6 @@ const SentimentForm = () => {
   const [videoDetails, setVideoDetails] = useState<VideoDetails | null>(null)
   const [confirmed, setConfirmed] = useState(false)
   const router = useRouter()
-  const [sentiments, setSentiments] = useState<any[]>([])
 
   const handleAnalyze = async () => {
     setLoading(true)
@@ -48,39 +44,70 @@ const SentimentForm = () => {
     setLoading(false)
   }
 
+  // Fetch comments using the YouTube Data API
+  // This function maps the likeCount to "votes" to match your MongoDB schema
+  const fetchYouTubeComments = async (videoId: string): Promise<any[]> => {
+    try {
+      const API_KEY = "AIzaSyDLpcI3xHBr5a7-BeopsWqB_Cv805dAvHE"
+      const response = await fetch(
+        `https://www.googleapis.com/youtube/v3/commentThreads?key=${API_KEY}&textFormat=plainText&part=snippet&videoId=${videoId}&maxResults=100`
+      )
+      const data = await response.json()
+      if (data.items) {
+        return data.items.map((item: any) => {
+          const snippet = item.snippet.topLevelComment.snippet
+          const rawLikes = Number(snippet.likeCount)
+          const votes = isNaN(rawLikes) ? 0 : rawLikes
+          return {
+            text: snippet.textDisplay,
+            votes, // use key "votes" per your schema
+            replies: 0, // default; adjust if needed
+            time: snippet.publishedAt,
+          }
+        })
+      }
+      return []
+    } catch (error) {
+      console.error("Error fetching comments:", error)
+      return []
+    }
+  }
+
   const handleConfirm = async () => {
     setLoading(true)
     setDeepLoading(true)
 
     try {
-      console.log("Sending request to API...")
+      console.log("Fetching comments using YouTube Data API...")
 
-      // Fetch comments from scraper
-      const response = await fetch("https://youtube-scraper-api-service.onrender.com/comments", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: youtubeLink }),
-      })
-
-      if (!response.ok) {
-        const errorText = await response.text()
-        console.error("Server Response:", errorText)
-        throw new Error(`Failed to fetch comments: ${response.status}`)
+      const videoId = extractYouTubeVideoId(youtubeLink)
+      if (!videoId) {
+        alert("Invalid YouTube link.")
+        setLoading(false)
+        setDeepLoading(false)
+        return
       }
 
-      const data = await response.json()
-      console.log("Fetched comments:", data)
+      // Fetch and sanitize comments
+      const comments = await fetchYouTubeComments(videoId)
+      console.log("Fetched comments:", comments)
 
-      // Send comments to MongoDB
+      // Store comments in MongoDB
       console.log("Storing comments in MongoDB...")
       const storeResponse = await fetch("/api/storeComments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ comments: data.comments }),
+        body: JSON.stringify({ comments }),
       })
 
-      // ✅ Fetch video transcript using our API
-      console.log("🎬 Fetching transcript...")
+      if (!storeResponse.ok) {
+        const errorText = await storeResponse.text()
+        console.error("Error storing comments:", errorText)
+        throw new Error("Failed to store comments")
+      }
+
+      // Fetch transcript using our API
+      console.log("Fetching transcript...")
       const transcriptResponse = await fetch("/api/getTranscript", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -89,54 +116,60 @@ const SentimentForm = () => {
 
       if (!transcriptResponse.ok) {
         const errorText = await transcriptResponse.text()
-        console.error("❌ Transcript API Response:", errorText)
+        console.error("Transcript API Error:", errorText)
         throw new Error(`Failed to fetch transcript: ${transcriptResponse.status}`)
       }
 
       const transcriptData = await transcriptResponse.json()
-      console.log("✅ Transcript Fetched:", transcriptData)
+      console.log("Transcript fetched:", transcriptData)
 
+      // Fetch stored comments
       console.log("Fetching stored comments...")
       const fetchResponse = await fetch("/api/getComments")
       if (!fetchResponse.ok) throw new Error("Failed to retrieve comments")
       const storedComments = await fetchResponse.json()
 
-      const commentTexts = storedComments.comments.map((comment: any) => comment.text)
+      // Prepare comment texts for sentiment analysis
+      // Filter out empty strings to prevent payload errors in Hugging Face API
+      const commentTexts = storedComments.comments
+        .map((comment: any) => comment.text)
+        .filter((text: string) => text.trim().length > 0)
 
       console.log("Running sentiment analysis...")
-      const sentiment = await fetch("/api/sentiment", {
+      // Call your sentiment API route. The backend should now use { text: comment } for each request.
+      const sentimentResponse = await fetch("/api/sentiment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ comments: commentTexts }),
       })
 
-      console.log("hello")
-
-      const responseText = await sentiment.text() // Capture raw response text
-
-      if (!sentiment.ok) {
-        console.error("API Error Response:", responseText)
-        throw new Error(`Sentiment analysis failed: ${sentiment.status} - ${responseText}`)
+      const responseText = await sentimentResponse.text()
+      if (!sentimentResponse.ok) {
+        console.error("Sentiment API Error Response:", responseText)
+        throw new Error(`Sentiment analysis failed: ${sentimentResponse.status} - ${responseText}`)
       }
 
       const sentimentResults = JSON.parse(responseText)
       console.log("Sentiment analysis result:", sentimentResults)
 
+      // Update comments with sentiment analysis results
       console.log("Updating comments with sentiment...")
       await fetch("/api/addSentiment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ comments: data.comments, sentimentResults: sentimentResults.results }),
+        body: JSON.stringify({ comments, sentimentResults: sentimentResults.results }),
       })
 
-      console.log("Sentiments added to database successfully.")
+      console.log("Sentiments added to database.")
 
+      // Fetch updated comments from MongoDB
       console.log("Fetching updated comments from MongoDB...")
       const newResponse = await fetch("/api/textComments")
       if (!newResponse.ok) throw new Error("Failed to retrieve updated comments")
       const updatedComments = await newResponse.json()
-      console.log(updatedComments)
+      console.log("Updated comments:", updatedComments)
 
+      // Compute summary
       console.log("Computing summary...")
       const summaryResponse = await fetch("/api/summary", {
         method: "POST",
@@ -156,7 +189,8 @@ const SentimentForm = () => {
       const summaryData = await summaryResponse.json()
       console.log("Summary Data:", summaryData.summary)
 
-      console.log("🔍 Fetching AI-based video analysis...")
+      // Fetch AI-based video analysis
+      console.log("Fetching AI-based video analysis...")
       const aiResponse = await fetch("/api/fetchDeepSeek", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -169,7 +203,7 @@ const SentimentForm = () => {
       })
 
       const aiData = await aiResponse.json()
-      console.log("🤖 DeepSeek AI Analysis:", aiData.result)
+      console.log("DeepSeek AI Analysis:", aiData.result)
 
       router.push("/SummaryDashboard")
     } catch (error) {
@@ -183,10 +217,10 @@ const SentimentForm = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-black bg-opacity-30 text-purple-200 p-6">
       {deepLoading && <AnalysisLoader />}
-
       <div className="w-full max-w-md space-y-8">
-        <h2 className="text-3xl font-extrabold text-center text-purple-400 glow">YouTube Sentiment Analysis</h2>
-
+        <h2 className="text-3xl font-extrabold text-center text-purple-400 glow">
+          YouTube Sentiment Analysis
+        </h2>
         <div className="backdrop-blur-lg bg-purple-900/10 p-8 rounded-2xl shadow-lg border border-purple-500/20">
           <input
             type="text"
@@ -204,7 +238,6 @@ const SentimentForm = () => {
             {loading ? <Loader2 className="animate-spin h-5 w-5" /> : "Analyze"}
           </button>
         </div>
-
         {videoDetails && (
           <div className="mt-8 p-6 bg-purple-900/20 rounded-2xl shadow-lg text-purple-200 text-center border border-purple-500/20">
             <img
@@ -217,7 +250,6 @@ const SentimentForm = () => {
             <p className="text-purple-400">Subscribers: {videoDetails.subscribers}</p>
             <p className="text-purple-400">Views: {videoDetails.views}</p>
             <p className="text-purple-400">Likes: {videoDetails.likes}</p>
-
             <div className="flex items-center justify-center gap-2 mt-6">
               <input
                 type="checkbox"
@@ -230,7 +262,6 @@ const SentimentForm = () => {
                 This is the correct video
               </label>
             </div>
-
             {confirmed && (
               <button
                 onClick={handleConfirm}
@@ -255,32 +286,24 @@ const extractYouTubeVideoId = (url: string): string | null => {
 const fetchYouTubeData = async (videoId: string): Promise<VideoDetails | null> => {
   try {
     const API_KEY = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY
-
-    // Fetch video details
     const videoResponse = await fetch(
-      `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&part=snippet,statistics&key=${API_KEY}`,
+      `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&part=snippet,statistics&key=${API_KEY}`
     )
     const videoData = await videoResponse.json()
-
     if (videoData.items.length === 0) return null
-
     const video = videoData.items[0].snippet
     const stats = videoData.items[0].statistics
     const channelId = video.channelId
-
-    // Fetch channel details to get subscriber count
     const channelResponse = await fetch(
-      `https://www.googleapis.com/youtube/v3/channels?id=${channelId}&part=statistics&key=${API_KEY}`,
+      `https://www.googleapis.com/youtube/v3/channels?id=${channelId}&part=statistics&key=${API_KEY}`
     )
     const channelData = await channelResponse.json()
-
     let subscribers = "N/A"
     if (channelData.items.length > 0) {
       subscribers = channelData.items[0].statistics.subscriberCount
         ? Number.parseInt(channelData.items[0].statistics.subscriberCount).toLocaleString()
         : "N/A"
     }
-
     return {
       title: video.title,
       thumbnail: video.thumbnails.high.url,
